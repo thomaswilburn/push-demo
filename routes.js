@@ -42,5 +42,6 @@ module.exports = {
     console.log(registrations);
     var responses = registrations.map(r => push.sendNotification(r.endpoint));
     Promise.all(responses).then(a => console.log(a));
+    response.end("Messages sent");
   }
 };
