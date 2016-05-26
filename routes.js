@@ -3,7 +3,10 @@ var qs = require("querystring");
 var url = require("url");
 
 var request = require("request");
+var push = require("web-push");
 var config = require("./config.json");
+
+push.setGCMAPIKey(config.gcm);
 
 var registrations;
 try {
@@ -25,32 +28,19 @@ var writeRegistered = function() {
 module.exports = {
   "/register": function(req, response) {
     var params = qs.parse(url.parse(req.url).query);
-    if (!params.id) {
-      response.writeHead(500);
-      response.end("Missing params");
-      return;
-    }
-    registrations.push(params.id);
+    registrations.push(params);
+    console.log(registrations);
     writeRegistered();
     response.end("Registered!");
   },
   "/unregister": function(req, response) {
     var params = qs.parse(url.parse(req.url).query);
-    registrations = registrations.filter(r => r != params.id);
+    registrations = registrations.filter(r => r.endpoint != params.endpoint);
     response.end("Unregistered");
   },
   "/send": function(req, response) {
-    request("https://android.googleapis.com/gcm/send", {
-      method: "POST",
-      headers: {
-        Authorization: `key=${config.gcm}`
-      },
-      json: true,
-      body: {
-        registration_ids: registrations
-      }
-    }, function(err, res, body) {
-      response.end(JSON.stringify(body));
-    });
+    console.log(registrations);
+    var responses = registrations.map(r => push.sendNotification(r.endpoint));
+    Promise.all(responses).then(a => console.log(a));
   }
 };

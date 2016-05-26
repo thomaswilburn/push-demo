@@ -11,21 +11,24 @@ if (!("serviceWorker" in navigator)) {
 
     r.pushManager.getSubscription({ userVisibleOnly: true }).then(function(sub) {
       checkbox.checked = !!sub;
-      if (sub) subscription = sub.endpoint.match(/send\/(.+)/)[1];
+      subscription = sub;
     });    
   
     checkbox.addEventListener("click", function() {
       if (checkbox.checked) {
         r.pushManager.subscribe({ userVisibleOnly: true }).then(function(sub) {
-          subscription = sub.endpoint.match(/send\/(.+)/)[1];
+          console.log(sub);
+          subscription = sub;
           var xhr = new XMLHttpRequest();
-          xhr.open("GET", `/register?id=${subscription}`);
+          var endpoint = encodeURIComponent(sub.endpoint);
+          var key = btoa(String.fromCharCode.apply(null, new Uint8Array(sub.getKey("p256dh"))));
+          xhr.open("GET", `/register?endpoint=${endpoint}&key=${key}`);
           xhr.send();
         });
       } else {
         r.pushManager.getSubscription().then(sub => sub.unsubscribe());
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", `/unregister?id=${subscription}`);
+        xhr.open("GET", `/unregister?endpoint=${subscription.endpoint}`);
         xhr.send();
       }
     });

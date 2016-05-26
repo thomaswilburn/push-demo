@@ -12,7 +12,7 @@ var serverOptions = {
 };
 
 var server = http.createServer(serverOptions);
-server.listen(4000);
+server.listen(config.port);
 
 server.on("request", function(req, response) {
   var p = url.parse(req.url).pathname;
