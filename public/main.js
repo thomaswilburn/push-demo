@@ -11,7 +11,7 @@ if (!("serviceWorker" in navigator)) {
 
     r.pushManager.getSubscription({ userVisibleOnly: true }).then(function(sub) {
       checkbox.checked = !!sub;
-      subscription = sub.endpoint.match(/send\/(.+)/)[1];
+      if (sub) subscription = sub.endpoint.match(/send\/(.+)/)[1];
     });    
   
     checkbox.addEventListener("click", function() {
