@@ -14,10 +14,12 @@
     
     <a class="send" href="javascript:void(0)">Send notification</a>
     <script>
-      alert("Your browser doesn't support push notifications, but you can still send them.");
-      var label = document.querySelector("label");
-      label.innerHTML = "Notifications not supported";
-      document.querySelector("input").disabled = true;
+      if (!navigator.serviceWorker) {
+        alert("Your browser doesn't support push notifications, but you can still send them.");
+        var label = document.querySelector("label");
+        label.innerHTML = "Notifications not supported";
+        document.querySelector("input").disabled = true;
+      }
     </script>  
     <script src="main.js"></script>
   </body>
