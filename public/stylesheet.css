@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  text-align: center;
+  padding: 24px;
+  margin: 0;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input + label {
+  display: block;
+  margin: 20px;
+}
+
+input + label::before {
+  height: 20px;
+  width: 40px;
+  display: inline-block;
+  content: "";
+  vertical-align: middle;
+  border-radius: 1em;
+  border: 1px solid #888;
+  margin: 0 16px;
+  transition: all .2s ease-in-out;
+  background-color: #888;
+  background-image: radial-gradient(circle at 10px, white 10px, rgba(0, 0, 0, .4) 10px, rgba(0, 0, 0, .2) 14px);
+  background-position: 0px 0px;
+  background-repeat: repeat-x;
+}
+
+input:checked + label::before {
+  font-weight: bold;
+  background-color: #55c;
+  background-position: 20px 0px;
+}
+
+.send {
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  padding: 30px;
+  margin: auto;
+  color: white;
+  font-weight: bold;
+  background: #55c;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, .2);
+  transition: all .2s linear;
+}
+
+.send:hover, .send:focus {
+  background: #33b;
+}
