@@ -29,19 +29,20 @@ module.exports = {
   "/register": function(req, response) {
     var params = qs.parse(url.parse(req.url).query);
     registrations.push(params);
-    console.log(registrations);
+    console.log(`Added registration. Total: ${registrations.length}`);
     writeRegistered();
     response.end("Registered!");
   },
   "/unregister": function(req, response) {
     var params = qs.parse(url.parse(req.url).query);
     registrations = registrations.filter(r => r.endpoint != params.endpoint);
+    console.log(`Removed registration. Total: ${registrations.length}`);
     response.end("Unregistered");
   },
   "/send": function(req, response) {
     console.log(registrations);
     var responses = registrations.map(r => push.sendNotification(r.endpoint));
-    Promise.all(responses).then(a => console.log(a));
+    console.log(`Sent notifications to ${registrations.length} users`);
     response.end("Messages sent");
   }
 };
